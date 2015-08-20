@@ -10,7 +10,8 @@
 return array(
     'controllers' => array(
         'invokables' => array(
-            'Users\Controller\Index' => 'Users\Controller\IndexController',
+            'Users\Controller\Index'    => 'Users\Controller\IndexController',
+            'Users\Controller\Register' => 'Users\Controller\RegisterController'
         ),
     ),
     'router' => array(

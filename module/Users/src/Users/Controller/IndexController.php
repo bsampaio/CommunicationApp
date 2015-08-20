@@ -16,6 +16,7 @@ namespace Users\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
+use Users\Form\LoginForm;
 
 class IndexController extends AbstractActionController {
     
@@ -31,7 +32,8 @@ class IndexController extends AbstractActionController {
     }
     
     public function loginAction(){
-        $view = new ViewModel();
+        $form = new LoginForm();
+        $view = new ViewModel(['form' => $form]);
         $view->setTemplate('users/index/login');
         return $view;
     }
