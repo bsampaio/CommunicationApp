@@ -17,6 +17,7 @@ namespace Users\Controller;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Users\Form\LoginForm;
+use Users\Form\LoginFilter;
 
 class IndexController extends AbstractActionController {
     
@@ -32,9 +33,35 @@ class IndexController extends AbstractActionController {
     }
     
     public function loginAction(){
-        $form = new LoginForm();
-        $view = new ViewModel(['form' => $form]);
-        $view->setTemplate('users/index/login');
-        return $view;
+        if($this->request->isGet()) {
+            $form = new LoginForm();
+            $view = new ViewModel(['form' => $form]);
+            $view->setTemplate('users/index/login');
+            return $view;
+        } else if ($this->request->isPost()) {
+            $post = $this->request->getPost();
+            $form = new LoginForm();
+            $inputFilter = new LoginFilter();
+            $form->setInputFilter($inputFilter);
+            $form->setData($post);
+            if (!$form->isValid()) {
+                $view = new ViewModel([
+                    'error' => true,
+                    'form' => $form
+                ]);
+                $view->setTemplate('users/index/login');
+                return $view;
+            }
+            return $this->redirect()->toRoute(null, [
+                'controller' => 'index',
+                'action'     => 'login'
+            ]);
+            
+        }
+        
+        return $this->redirect()->toRoute(null,[
+            'controller' => 'index',
+            'action'     => 'login'
+        ]);
     }
 }

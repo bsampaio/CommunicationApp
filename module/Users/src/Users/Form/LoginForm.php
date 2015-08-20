@@ -35,16 +35,6 @@ class LoginForm extends Form{
             'filters'    => [
                 ['name' => 'StringTrim'],
             ],
-            'validators' => [
-                [
-                    'name'    => 'EmailAddress',
-                    'options' => [
-                        'messages' => [
-                            \Zend\Validator\EmailAddress::INVALID_FORMAT =>  'Email address format is invalid'
-                        ]
-                    ]
-                ]
-            ]
             
         ]);
         
@@ -60,22 +50,13 @@ class LoginForm extends Form{
             'filters'    => [
                 
             ],
-            'validators' => [
-                [
-                    'name'    => 'StringLength',
-                    'options' => [
-                        'min' => 8,
-                        'max' => 100
-                    ]
-                ]
-            ]
         ]);
         
         $this->add([
             'name'       => 'submit',
             'attributes' => [
                 'type'      => 'Submit',
-                'value'     => 'Register'
+                'value'     => 'Login'
             ],
             'options'    => [
                 'label' => 'Submit'
