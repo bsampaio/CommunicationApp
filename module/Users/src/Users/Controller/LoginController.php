@@ -16,31 +16,28 @@ namespace Users\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
-use Users\Form\LoginForm;
-use Users\Form\LoginFilter;
-use Zend\Authentication\Adapter\DbTable as DbTableAuthAdapter;
-use Zend\Authentication\AuthenticationService;
 
 class LoginController extends AbstractActionController {
     
-    protected $authService;
-
     public function indexAction(){
+        
+        $sm = $this->getServiceLocator();
+        $form = $this->getServiceLocator()->get('LoginForm');
         if($this->request->isGet()) {
-            $form = new LoginForm();
             $view = new ViewModel(['form' => $form]);
             $view->setTemplate('users/login/index');
             return $view;
         } else if ($this->request->isPost()) {
             $post = $this->request->getPost();
-            $form = new LoginForm();
-            $inputFilter = new LoginFilter();
+            $inputFilter = $sm->get('LoginFilter');
             $form->setInputFilter($inputFilter);
             $form->setData($post);
-            $this->getAuthService()->getAdapter()
+            
+            $authService = $this->getServiceLocator()->get('AuthService');
+            $authService->getAdapter()
                     ->setIdentity($this->request->getPost('email'))
                     ->setCredential($this->request->getPost('password'));
-            $result = $this->getAuthService()->authenticate();
+            $result = $authService->authenticate();
             
             if (!$form->isValid()) {
                 $view = new ViewModel([
@@ -52,7 +49,7 @@ class LoginController extends AbstractActionController {
             }
             
             if ($result->isValid()) {
-                $this->getAuthService()->getStorage()->write($this->request->getPost('email'));
+                $authService->getStorage()->write($this->request->getPost('email'));
                 return $this->redirect()->toRoute(NULL, [
                     'controller' => 'login',
                     'action'     => 'confirm'
@@ -67,22 +64,12 @@ class LoginController extends AbstractActionController {
     }
     
     public function confirmAction() {
-        $userEmail = $this->getAuthService()->getStorage()->read();
+        $userEmail = $this->getServiceLocator()->get('AuthService')
+                        ->getStorage()->read();
         $viewModel = new ViewModel([
             'userEmail' => $userEmail
         ]);
         return $viewModel;
     }
     
-    public function getAuthService() {
-        if (! $this->authService) {
-            $dbAdapter = $this->getServiceLocator()->get('Zend\Db\Adapter\Adapter');
-            $dbTableAuthAdapter = new DbTableAuthAdapter($dbAdapter, 'user', 'email', 'password', 'MD5(?)');
-            $authService = new AuthenticationService();
-            $authService->setAdapter($dbTableAuthAdapter);
-            $this->authService = $authService;
-        }
-        
-        return $this->authService;
-    }
 }

@@ -24,7 +24,7 @@ use Users\Model\UserTable;
 class RegisterController extends AbstractActionController{
     
     public function indexAction() {
-        $form = new RegisterForm();
+        $form = $this->getServiceLocator()->get('RegisterForm');
         $viewModel = new ViewModel(['form' => $form]);
         return $viewModel;
     }
@@ -43,9 +43,7 @@ class RegisterController extends AbstractActionController{
         }
         
         $post = $this->request->getPost();
-        $form = new RegisterForm();
-        $inputFilter = new RegisterFilter();
-        $form->setInputFilter($inputFilter);
+        $form = $this->getServiceLocator()->get('RegisterForm');
         $form->setData($post);
         if (!$form->isValid()) {
             $model = new ViewModel([
@@ -64,15 +62,11 @@ class RegisterController extends AbstractActionController{
     
     protected function createUser(array $data) {
         
-        $sm                 = $this->getServiceLocator();
-        $dbAdapter          = $sm->get('Zend\Db\Adapter\Adapter');
-        $resultSetPrototype = new \Zend\Db\ResultSet\ResultSet();
-        $resultSetPrototype->setArrayObjectPrototype(new User());
-        $tableGateway       = new \Zend\Db\TableGateway\TableGateway('user', $dbAdapter, null, $resultSetPrototype);
+        $sm        = $this->getServiceLocator();
+        $userTable = $sm->get('UserTable');
         
         $user      = new User();
         $user->exchangeArray($data);
-        $userTable = new UserTable($tableGateway);
         $userTable->saveUser($user);
         return true;
     }
