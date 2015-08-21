@@ -22,7 +22,7 @@ class UserManagerController extends AbstractActionController {
     public function indexAction(){
         
         $sm = $this->getServiceLocator();
-        $userTable = $sm->get('LoginForm');
+        $userTable = $sm->get('UserTable');
         $viewModel = new ViewModel([
             'users' => $userTable->fetchAll()
         ]);

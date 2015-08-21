@@ -52,7 +52,7 @@ return array(
                     'user-manager' => array(
                         'type'    => 'Segment',
                         'options' => array(
-                            'route'    => '/user-manager[/:action[/:id]]]',
+                            'route'    => '/user-manager[/:action[/:id]]',
                             'constraints' => array(
                                 'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                                 'id'     => '[a-zA-Z0-9_-]*',
