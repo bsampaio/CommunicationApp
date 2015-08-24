@@ -21,6 +21,9 @@ use Users\Form\LoginForm;
 use Users\Form\RegisterFilter;
 use Users\Form\RegisterForm;
 
+use Users\Form\UserEditFilter;
+use Users\Form\UserEditForm;
+
 use Zend\Db\ResultSet\ResultSet;
 use Zend\Db\TableGateway\TableGateway;
 
@@ -78,6 +81,11 @@ class Module {
                     $form->setInputFilter($sm->get('RegisterFilter'));
                     return $form;
                 },
+                'UserEditForm'      => function ($sm) {
+                    $form = new UserEditForm();
+                    $form->setInputFilter($sm->get('UserEditFilter'));
+                    return $form;
+                },
                         
                 //Filters
                 'LoginFilter'       => function ($sm) {
@@ -85,6 +93,9 @@ class Module {
                 },
                 'RegisterFilter'    => function ($sm) {
                     return new RegisterFilter();
+                },
+                'UserEditFilter'    => function ($sm) {
+                    return new UserEditFilter();
                 },
                         
                 //Auth

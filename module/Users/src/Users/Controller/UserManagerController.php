@@ -52,7 +52,8 @@ class UserManagerController extends AbstractActionController {
         $form->bind($user);
         $form->setData($post);
         
-        $sm->get('UserTable')->saveUser($user);
+        $sm->get('UserTable')
+                ->saveUser($user);
     }
     
     public function deleteAction() {

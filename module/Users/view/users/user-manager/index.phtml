@@ -4,6 +4,7 @@
         <tr>
             <th>Name</th>
             <th>Email</th>
+            <th>Actions</th>
         </tr>
     </thead>
     <tbody>
@@ -11,6 +12,11 @@
         <tr>
             <td><?= $user->name ?></td>
             <td><?= $user->email ?></td>
+            <td>
+                <a href= "<?= $this->url('user-manager',['action'=>'edit', 'id' => $album->id]); ?>">
+                    Edit
+                </a>
+            </td>
         </tr>
         <?php endforeach; ?>
     </tbody>
