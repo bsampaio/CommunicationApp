@@ -16,7 +16,7 @@ namespace Users\Form;
 
 use Zend\Form\Form;
 
-class UserEditForm extends Form{
+class UserEditForm extends Form {
     
     public function __construct($name = null) {
         parent::__construct('UserEdit');

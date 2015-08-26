@@ -48,7 +48,7 @@ class UserTable {
         $rowset = $this->tableGateway->select(['id' => $id]);
         $row    = $rowset->current();
         if (!$row) {
-            throw new Exception("Could not find row with id: $id");
+            throw new \Exception("Could not find row with id: $id");
         }
         
         return $row;
