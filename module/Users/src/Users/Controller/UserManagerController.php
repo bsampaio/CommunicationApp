@@ -48,12 +48,12 @@ class UserManagerController extends AbstractActionController {
         $post = $this->request->getPost();
         $userTable = $sm->get('UserTable');
         $user = $userTable->getUser($post->id);
+
         $form = $sm->get('UserEditForm');
 
         $form->bind($user);
 
-        $sm->get('UserTable')
-                ->saveUser($user);
+        $userTable->saveUser($user);
         $this->redirect()->toRoute(null, [
             'controller' => "UserManager",
             'action' => 'Index'
